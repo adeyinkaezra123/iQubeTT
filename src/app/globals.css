@@ -2,9 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  @apply antialiased;
+  @apply min-h-screen;
+  @apply w-full;
+  @apply scroll-smooth;
+}
+
+@layer utilities {
+  .clipped_background {
+    @apply bg-white;
+    @apply relative;
+  }
+
+  .clipped_background::before {
+    @apply absolute;
+    @apply h-1/2;
+    @apply w-full;
+    @apply bg-gradient-to-br from-[#f2c94c33] to-[#f2994a33];
+    content: '';
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+  }
+
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
-
