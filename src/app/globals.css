@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  @apply antialiased;
-  @apply min-h-screen;
-  @apply w-full;
-  @apply scroll-smooth;
-}
-
 @layer utilities {
   .clipped_background {
     @apply bg-white;
@@ -17,7 +10,7 @@ html {
 
   .clipped_background::before {
     @apply absolute;
-    @apply h-1/2;
+    @apply h-3/5;
     @apply w-full;
     @apply bg-gradient-to-br from-[#f2c94c33] to-[#f2994a33];
     content: '';
@@ -30,4 +23,60 @@ html {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+}
+
+
+@layer base {
+  :root {
+    --iqube-purple: 229 28% 43%;
+    --iqube-orange: 28 87% 62%;
+    --iqube-light-blue: 246 14% 56%;
+    --iqube-gray: 0 0% 74% 1;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96.1%;
+    --muted-foreground: var(--iqube-light-blue);
+
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --ghost: t229 28% 43%;
+    --border: 0 0% 89.8%;
+    --input: var(--iqube-light-blue);
+    --ring: var(--iqube-purple);
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    @apply antialiased;
+    @apply min-h-screen;
+    @apply w-full;
+    @apply scroll-smooth;
+  }
 }

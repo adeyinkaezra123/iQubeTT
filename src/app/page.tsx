@@ -1,9 +1,13 @@
-import Image from 'next/image'
+'use client'
+
+import MainTab from '@/components/forms/MainTab'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      Hello world!
-    </main>
+    <>
+      <h2 className='text-left font-semibold text-2xl text-iqube-purple'>Complete your Purchase</h2>
+      <MainTab />
+    </>
+
   )
 }
