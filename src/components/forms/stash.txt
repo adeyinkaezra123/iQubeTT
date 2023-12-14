@@ -1,0 +1,49 @@
+  <AutoForm
+      onSubmit={(e) => handleSubmit()}
+      // Pass the schema to the form
+      formSchema={formSchema}
+      // You can add additional config for each field
+      // to customize the UI
+      fieldConfig={{
+
+        emailAddress: {
+          description: "The purchase reciept would be sent to this address",
+          inputProps: {
+            type: "email",
+            placeholder: "elon@musk.com",
+          },
+        },
+
+        address1: {
+          inputProps: {
+            autoComplete: 'address-line1'
+          }
+        },
+
+        address2: {
+          inputProps: {
+            autoComplete: 'address-line2'
+          }
+        },
+        birthday: {
+          description: "We need your birthday to send you a gift.",
+        },
+      }}
+    >
+      <div className="flex space-x-4 items-center">
+        <Input/>
+        <Button variant='ghost' className='text-[#4E598C] text-md font-medium' >Cancel Payment</Button>
+      </div>
+      <div className="flex space-x-4 items-center">
+        <AutoFormSubmit size='lg'>Next</AutoFormSubmit>
+        <Button variant='ghost' className='text-[#4E598C] text-md font-medium' >Cancel Payment</Button>
+      </div>
+
+      <p className="text-gray-500 text-sm">
+        By submitting this form, you agree to our{" "}
+        <a href="#" className="text-primary underline">
+          terms and conditions
+        </a>
+
+      </p>
+    </AutoForm>
