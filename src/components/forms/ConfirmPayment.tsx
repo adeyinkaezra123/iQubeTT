@@ -21,7 +21,7 @@ import {
 const invoices = [
     {
         invoice: "INV007",
-        price: 300,
+        price: "300",
 
     },
 ]

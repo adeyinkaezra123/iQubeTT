@@ -40,8 +40,8 @@ const formSchema = z.object({
   // Enum will show a select
 
   stateAndLga: z.object({
-    state: z.enum(nigerianStates),
-    lga: z.enum(["red", "green", "blue"]),
+    state: z.enum([' ', ...nigerianStates]),
+    lga: z.enum([" "]),
   }),
 
 });

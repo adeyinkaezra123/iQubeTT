@@ -46,15 +46,18 @@ export default function AutoFormObject<
 
         if (zodBaseType === "ZodObject") {
           return (
-            <AutoFormObject
-              schema={item as unknown as z.ZodObject<any, any>}
-              form={form}
-              fieldConfig={
-                (fieldConfig?.[name] ?? {}) as FieldConfig<
-                  z.infer<typeof item>
-                >
-              }
-              path={[...path, name]} />
+            <div key={key}>
+              <AutoFormObject
+                schema={item as unknown as z.ZodObject<any, any>}
+                form={form}
+                fieldConfig={
+                  (fieldConfig?.[name] ?? {}) as FieldConfig<
+                    z.infer<typeof item>
+                  >
+                }
+                path={[...path, name]} />
+
+            </div>
           );
         }
 

@@ -24,7 +24,7 @@ const formSchema = z.object({
 
     cardDetails: z.string().max(16),
 
-    expiryDate: z.coerce.date(new Date().toString()),
+    expiryDate: z.coerce.date(),
     invitedGuests: z
         .array(
             // Define the fields for each item
