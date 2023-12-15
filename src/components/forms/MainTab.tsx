@@ -93,10 +93,9 @@ function MainTab() {
         <span className="border-b border-black w-[95%] h-[1px] block absolute top-1 mx-2 " />
         {formArray.map((form, index) => {
           return (
-            <TabsContent value={form.id}>
+            <TabsContent value={form.id} key={form.id + form.name}>
               {
                 <form.component
-                  key={form.id + form.name}
                   handleSubmit={handleSubmit}
                   ref={(component) =>
                     (componentRefs.current[index] = component!)
