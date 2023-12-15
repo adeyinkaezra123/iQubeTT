@@ -1,103 +1,222 @@
-"use client"
+"use client";
 
-import * as z from 'zod';
-import { useMemo } from 'react';
-import AutoForm, { AutoFormSubmit } from '../wrappers/autoform';
-import { Button } from "@/components/ui/button"
-import { useState } from 'react';
-import { Input } from '../ui/input';
-import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../ui/form';
-import statesAndLga from '@/utils/statesAndLga';
+import * as z from "zod";
+import { forwardRef, useMemo } from "react";
 
-const nigerianStates = statesAndLga.map((entry) => entry.state)
-type FormProps = {
-  handleSubmit: () => void,
-  className?: string
-}
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Input } from "../ui/input";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  Form,
+} from "../ui/form";
+import statesAndLga from "@/utils/statesAndLga";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  SelectGroup,
+  SelectLabel,
+} from "../ui/select";
 
-const formSchema = z.object({
+const nigerianStates = statesAndLga.map((entry) => entry.state);
+type Ref = HTMLButtonElement;
 
-  fullName: z.string({ required_error: "Full name is required." }).min(5, {
-    message: "Full name must be at least 5 characters.",
-  }).default(''),
+type Props = {
+  handleSubmit: (data: any) => void;
+  className?: string;
+};
 
-  emailAddress: z.string({
-    required_error: "Please provide a valid email address"
-  }).email("This email is invalid."),
+const PersonalInfo = forwardRef<Ref, Props>(function PersonalInfo(props, ref) {
+  const { handleSubmit, className } = props;
 
+  const formSchema = z.object({
+    fullName: z
+      .string({ required_error: "Full name is required." })
+      .min(5, {
+        message: "Full name must be at least 5 characters.",
+      })
+      .default(""),
 
-  address: z.object({
-    address1: z.string().min(5, {
-      message: 'Please enter a valid address'
-    }).max(100).describe('Address 1').optional(),
+    emailAddress: z
+      .string({
+        required_error: "Please provide a valid email address",
+      })
+      .email("This email is invalid."),
 
-    address2: z.string().min(5, {
-      message: 'Please enter a valid address'
-    }).max(100).describe('Address 2').optional(),
-  }),
+    address1: z
+      .string()
+      .min(5, {
+        message: "Please enter a valid address",
+      })
+      .max(100)
+      .describe("Address 1")
+      .optional(),
 
+    address2: z
+      .string()
+      .min(5, {
+        message: "Please enter a valid address",
+      })
+      .max(100)
+      .describe("Address 2")
+      .optional(),
 
-  // Enum will show a select
+    lga: z.string(),
+    state: z.string({ required_error: "This field is required" }),
+  });
 
-  stateAndLga: z.object({
-    state: z.enum([' ', ...nigerianStates]),
-    lga: z.enum([" "]),
-  }),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: "",
+    },
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
 
-});
-
-
-export default function PersonalInfo({ handleSubmit, className }: FormProps) {
-  const [values, setValues] = useState<Partial<z.infer<typeof formSchema>>>({});
+  const watchState = form.watch("state", "");
 
   return (
-    <AutoForm
-      onSubmit={(e) => handleSubmit()}
-      // Pass the schema to the form
-      formSchema={formSchema}
-      // You can add additional config for each field
-      // to customize the UI
-      fieldConfig={{
-        fullName: {
-          inputProps: {
-            placeholder: "Elon Musk"
-          }
-        },
-        emailAddress: {
-          description: "The purchase reciept would be sent to this address",
-          inputProps: {
-            type: "email",
-            placeholder: "elon@musk.com",
-          },
-        },
-
-      }}
-    >
-      {/* <div className="flex space-x-4 items-center">
-
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(() =>
+          handleSubmit([!Object.keys(form.formState.errors).length, form.getValues()])
+        )}
+        className="space-y-8"
+      >
         <FormField
-          // control={form.control}
-          name="username"
+          control={form.control}
+          name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Full Name</FormLabel>
+              <span className="text-destructive"> *</span>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Elon Musk" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button variant='ghost' className='text-[#4E598C] text-md font-medium' >Cancel Payment</Button>
-      </div> */}
+        <FormField
+          control={form.control}
+          name="emailAddress"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email Address</FormLabel>
+              <span className="text-destructive"> *</span>
+              <FormControl>
+                <Input placeholder="elon@musk.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="address1"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address Line 1</FormLabel>
+              <FormControl>
+                <Input placeholder="Street No., Street Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="address2"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address Line 2</FormLabel>
+              <FormControl>
+                <Input placeholder="City, State" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="flex gap-8 w-full">
+          <FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>State</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a State" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectGroup>
+                      {nigerianStates.map((value) => (
+                        <SelectItem value={value} key={value}>
+                          {value}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="lga"
+            render={({ field }) => (
+              <FormItem className="flex-2">
+                <FormLabel>Local Government Area</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger disabled={!watchState}>
+                      <SelectValue placeholder={"Select a LGA"} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectGroup>
+                      {watchState &&
+                        statesAndLga
+                          .filter((state) => state.state == watchState)[0]
+                          .lgas.map((value, index) => (
+                            <SelectItem value={value} key={value + index}>
+                              {value}
+                            </SelectItem>
+                          ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <Button className="hidden" type="submit" ref={ref}>
+          Submit
+        </Button>
+      </form>
+    </Form>
+  );
+});
 
-      <div className="flex space-x-4 items-center">
-        <AutoFormSubmit size='lg'>Next</AutoFormSubmit>
-        <Button variant='ghost' className='text-[#4E598C] text-md font-medium' >Cancel Payment</Button>
-      </div>
-    </AutoForm>
-  )
-}
+export default PersonalInfo;
